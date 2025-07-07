@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
@@ -50,7 +49,7 @@ export default function Header() {
           </Link>
         </div>
         <div className="search-cate">
-          <select className="selectpicker">
+          <select className="selectpicker" data-live-search="true">
             <option key="all-cats">All Categories</option>
             {loadingCats && (
                 <option key="loading" disabled>

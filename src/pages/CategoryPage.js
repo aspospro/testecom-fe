@@ -96,7 +96,8 @@ export default function CategoryPage() {
             {/* Products */}
             <div className="col-md-9">
               <div className="short-lst"><h2>{title}</h2></div>
-              <div className="item-col-4">
+              
+              <div className="item-col-4" style={{ display: 'flex', flexWrap: 'wrap' }} >
                 {products.length > 0 ? (
                   products.map(p => {
                     const imgSrc = p.image_url || '/images/item-img-1-1.jpg';
@@ -105,7 +106,7 @@ export default function CategoryPage() {
                       : 'N/A';
 
                     return (
-                      <div key={p.id} className="product">
+                      <div key={p.id} className="product" style={{ flex: '0 0 calc(25% - 12px)' }} >
                         <article>
                           <img className="img-responsive" src={imgSrc} alt={p.name} />
                           <Link to={`/products/${p.id}`} className="tittle">

@@ -1,6 +1,24 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 export default function HomeSlider() {
+  useEffect(() => {
+    const $ = window.jQuery;
+    if ($ && $.fn.revolution) {
+      // Optional: Kill any previous slider instance to avoid duplicates
+      try {
+        $('.tp-banner').revkill && $('.tp-banner').revkill();
+      } catch (e) {
+        console.warn('Slider cleanup skipped or not initialized yet.');
+      }
+
+      // Reinitialize slider with the original settings
+      $('.tp-banner').show().revolution({
+        delay: 9000,
+        startwidth: 800,
+        startheight: 500,
+      });
+    }
+  }, []); // Only runs when component mounts
+  
   return (
     <section className="slid-sec">
       <div className="container">
