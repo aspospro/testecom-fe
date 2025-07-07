@@ -30,7 +30,7 @@ export default function Header() {
       <p>Tools You Trust. Projects You Love.!</p>
       <div className="right-sec">
         <ul>
-          <li><a href="#">Login/Register </a></li>
+          <li><Link to={`/login`}>Login/Register </Link></li>
           <li><a href="#">Store Location </a></li>
           <li><a href="#">FAQ </a></li>
           <li><a href="#">Newsletter </a></li>

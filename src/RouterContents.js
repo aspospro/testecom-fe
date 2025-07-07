@@ -8,6 +8,7 @@ import ProductsList     from './pages/ProductsList';
 import ConfirmationPage from './ConfirmationPage';
 import ContactPage      from './components/ContactPage';
 import CategoryPage     from './pages/CategoryPage';
+import LoginPage        from './pages/LoginPage';
 
 export default function RouterContents() {
   const location = useLocation();
@@ -43,6 +44,7 @@ export default function RouterContents() {
           <Route path="/category/:categoryId"                                       element={<CategoryPage />} />
           <Route path="/category/:categoryId/group/:groupId"                        element={<CategoryPage />} />
           <Route path="/category/:categoryId/group/:groupId/subgroup/:subgroupId"   element={<CategoryPage />} />
+          <Route path="/login"                                                      element={<LoginPage />} />        
         </Routes>
       </main>
 
