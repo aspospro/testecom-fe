@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("loggedIn") === "true"
+  );
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [loadingCats, setLoadingCats] = useState(true);
   const [errorCats, setErrorCats] = useState(null);
@@ -23,6 +28,39 @@ export default function Header() {
         setLoadingCats(false);
       });
   }, []);
+
+  // useEffect(() => {
+  //   const user = localStorage.getItem("user");
+  //   setIsLoggedIn(!!user);
+  // }, []);
+
+  useEffect(() => {
+    const syncLoginState = () => {
+      const loggedIn = localStorage.getItem("loggedIn") === "true";
+      setIsLoggedIn(loggedIn);
+    };
+
+    window.addEventListener("storage", syncLoginState);
+
+    syncLoginState();
+
+    return () => {
+      window.removeEventListener("storage", syncLoginState);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/logout");
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("user");
+      setIsLoggedIn(false);
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
+
   return (
     <>   
     <div className="top-bar">
@@ -30,10 +68,18 @@ export default function Header() {
       <p>Tools You Trust. Projects You Love.!</p>
       <div className="right-sec">
         <ul>
-          <li><Link to={`/login`}>Login/Register </Link></li>
-          <li><a href="#">Store Location </a></li>
-          <li><a href="#">FAQ </a></li>
-          <li><a href="#">Newsletter </a></li>
+          <li>
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className="text-blue-600 underline">
+                Logout
+              </button>
+            ) : (
+              <Link to="/login">Login/Register</Link>
+            )}
+          </li>
+          <li><a href="#">Store Location</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Newsletter</a></li>
         </ul>
         <div className="social-top"> <a href="#"><i className="fa fa-facebook"></i></a> <a href="#"><i className="fa fa-twitter"></i></a> <a href="#"><i className="fa fa-linkedin"></i></a> <a href="#"><i className="fa fa-dribbble"></i></a> <a href="#"><i className="fa fa-pinterest"></i></a> </div>
       </div>

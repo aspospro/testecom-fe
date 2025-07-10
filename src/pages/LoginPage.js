@@ -1,11 +1,14 @@
 // src/pages/LoginPage.jsx
 import axios from "axios";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -13,7 +16,10 @@ export default function LoginPage() {
     try {
       await axios.get("/sanctum/csrf-cookie"); // for Sanctum
       const response = await axios.post("/api/login", { email, password });
-      console.log(response.data);
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      window.dispatchEvent(new Event("storage"));
+      navigate("/");
       // Redirect or update state
     } catch (err) {
       setError("Invalid login credentials 123");
@@ -58,6 +64,12 @@ export default function LoginPage() {
         >
           Login
         </button>
+        <p className="mt-4 text-center">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-blue-600 underline">
+            Register
+          </Link>
+        </p>
       </form>
     </div>
   );
